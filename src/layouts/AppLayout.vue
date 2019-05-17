@@ -85,7 +85,7 @@
 import { openURL } from 'quasar';
 
 export default {
-  name: 'MyLayout',
+  name: 'AppLayout',
   data() {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop,
