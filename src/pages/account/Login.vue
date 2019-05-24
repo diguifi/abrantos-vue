@@ -43,16 +43,28 @@ export default {
     return {
       username: null,
       password: null,
+      message: null,
     };
   },
 
   methods: {
     onSubmit() {
-      this.$q.notify({
-        color: 'green-4',
-        textColor: 'white',
-        icon: 'fas fa-check-circle',
-        message: 'Bem-vindo azarado maldito! (isso é só um teste, você nem ta logado de verdade) ',
+      this.$store.dispatch('auth/AUTH_REQUEST', { username: this.username, password: this.password }).then((success) => {
+        if (success) {
+          this.$q.notify({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'fas fa-check-circle',
+            message: 'Bem-vindo azarado maldito! ',
+          });
+        }
+      }).catch(() => {
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'fas fa-exclamation-triangle',
+          message: 'Errrrrrrrrrouuuu ',
+        });
       });
     },
 
