@@ -57,6 +57,7 @@ export default {
             icon: 'fas fa-check-circle',
             message: 'Bem-vindo azarado maldito! ',
           });
+          this.$router.push({ name: 'home' });
         }
       }).catch(() => {
         this.$q.notify({

@@ -6,6 +6,6 @@ export async function AUTH_REQUEST(context, loginParams) {
   localStorage.setItem('abrantostoken', token);
   const axiosAuthHeader = 'Authorization';
   axios.defaults.headers.common[axiosAuthHeader] = `Bearer ${token}`;
-  this.commit('auth/setAuthenticated', true);
+  this.commit('auth/setAuthenticated', token);
   return true;
 }

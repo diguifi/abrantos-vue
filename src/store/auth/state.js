@@ -1,3 +1,3 @@
 export default {
-  authenticated: false,
+  token: localStorage.getItem('abrantostoken') || '',
 };

@@ -1,3 +1,3 @@
-export function isAuthenticated() {
-  return this.isAuthenticated;
+export function isAuthenticated(state) {
+  return !!state.token;
 }

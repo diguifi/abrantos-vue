@@ -72,6 +72,15 @@
             <q-item-label caption>@quasarframework</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable tag="a" @click="logout()">
+          <q-item-section avatar>
+            <q-icon name="logout" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Sair</q-item-label>
+            <q-item-label caption>vai na sombra</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -93,6 +102,11 @@ export default {
   },
   methods: {
     openURL,
+    logout() {
+      localStorage.removeItem('abrantostoken');
+      this.$store.commit('auth/setAuthenticated', '');
+      this.$router.push({ name: 'login' });
+    },
   },
 };
 </script>

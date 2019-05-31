@@ -1,3 +1,3 @@
 export function setAuthenticated(state, value) {
-  this.authenticated = value;
+  state.token = value;
 }
