@@ -73,7 +73,14 @@ module.exports = function (ctx) {
           loader: 'eslint-loader',
           exclude: /node_modules/
         })
-      }
+      },
+      env: ctx.dev
+        ? { // so on dev we'll have
+          API_URL: JSON.stringify('https://abrantos.azurewebsites.net/api/')
+        }
+        : { // and on build (production):
+          API_URL: JSON.stringify('https://abrantos.azurewebsites.net/api/')
+        }
     },
 
     devServer: {

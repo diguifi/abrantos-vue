@@ -26,7 +26,7 @@
             :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
 
           <div>
-            <q-btn label="Login" type="submit" color="primary"></q-btn>
+            <q-btn label="Login" type="submit" color="primary" :loading="isLoading"></q-btn>
             <q-btn label="Registrar" @click="onRegister()" color="primary" flat class="q-ml-sm" />
           </div>
         </q-form>
@@ -44,12 +44,15 @@ export default {
       username: null,
       password: null,
       message: null,
+      isLoading: false,
     };
   },
 
   methods: {
     onSubmit() {
+      this.isLoading = true;
       this.$store.dispatch('auth/AUTH_REQUEST', { username: this.username, password: this.password }).then((success) => {
+        this.isLoading = false;
         if (success) {
           this.$q.notify({
             color: 'green-4',
@@ -60,6 +63,7 @@ export default {
           this.$router.push({ name: 'home' });
         }
       }).catch(() => {
+        this.isLoading = false;
         this.$q.notify({
           color: 'red-5',
           textColor: 'white',
