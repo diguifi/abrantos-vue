@@ -76,7 +76,7 @@ module.exports = function (ctx) {
       },
       env: ctx.dev
         ? { // so on dev we'll have
-          API_URL: JSON.stringify('https://abrantos.azurewebsites.net/api/')
+          API_URL: JSON.stringify('http://localhost:5000/api/')
         }
         : { // and on build (production):
           API_URL: JSON.stringify('https://abrantos.azurewebsites.net/api/')

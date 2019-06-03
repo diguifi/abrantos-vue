@@ -74,12 +74,7 @@ export default {
     },
 
     onRegister() {
-      this.$q.notify({
-        color: 'red-5',
-        textColor: 'white',
-        icon: 'fas fa-exclamation-triangle',
-        message: 'Calma lá queridão, to desenvolvendo aos poucos ',
-      });
+      this.$router.push({ name: 'register' });
     },
   },
 };

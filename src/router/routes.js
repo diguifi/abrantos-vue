@@ -11,10 +11,12 @@ const routes = [
     },
   },
   {
-    path: '/login',
+    path: '',
     component: () => import('layouts/AccountLayout.vue'),
     children: [
-      { path: '', name: 'login', component: () => import('pages/account/Login.vue') },
+      { path: '/login', name: 'login', component: () => import('pages/account/Login.vue') },
+      { path: '/register', name: 'register', component: () => import('pages/account/Register.vue') },
+      { path: '/confirm', name: 'confirm', component: () => import('pages/account/Confirmation.vue') },
     ],
   },
 ];
