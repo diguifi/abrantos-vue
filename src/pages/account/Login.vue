@@ -2,34 +2,41 @@
   <q-page class="row text-center">
     <div class="col-3"></div>
     <div class="col self-center">
-      <q-form
-          @submit="onSubmit"
-          class="q-gutter-lg">
+      <q-card class="danger" flat bordered>
+        <q-card-section>
+          <q-form
+              @submit="onSubmit"
+              class="q-gutter-lg">
 
-          <h3>Abrantos</h3>
+              <h3>Abrantos</h3>
 
-          <q-input
-            filled
-            v-model="username"
-            label="Username"
-            hint="Digite seu nome de usuário"
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
+              <q-input
+                filled
+                v-model="username"
+                label="Username"
+                hint="Digite seu nome de usuário"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
 
-          <q-input
-            v-model="password"
-            filled
-            type="password"
-            label="Senha"
-            hint="Digite sua senha"
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
+              <q-input
+                v-model="password"
+                filled
+                type="password"
+                label="Senha"
+                hint="Digite sua senha"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
 
-          <div>
-            <q-btn label="Login" type="submit" color="primary" :loading="isLoading"></q-btn>
-            <q-btn label="Registrar" @click="onRegister()" color="primary" flat class="q-ml-sm" />
-          </div>
-        </q-form>
+              <div>
+                <p class="text-negative">{{message}}</p>
+                <q-btn label="Login" type="submit"
+                  color="primary" :loading="isLoading"/>
+                <q-btn label="Registrar" @click="onRegister()"
+                  color="primary" flat class="q-ml-sm"/>
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
       </div>
       <div class="col-3"></div>
   </q-page>
@@ -54,6 +61,7 @@ export default {
       this.$store.dispatch('auth/AUTH_REQUEST', { username: this.username, password: this.password }).then((success) => {
         this.isLoading = false;
         if (success) {
+          this.message = '';
           this.$q.notify({
             color: 'green-4',
             textColor: 'white',
@@ -62,7 +70,8 @@ export default {
           });
           this.$router.push({ name: 'home' });
         }
-      }).catch(() => {
+      }).catch((error) => {
+        this.message = error.response.data;
         this.isLoading = false;
         this.$q.notify({
           color: 'red-5',

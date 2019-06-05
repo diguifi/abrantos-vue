@@ -2,61 +2,75 @@
   <q-page class="row text-center">
     <div class="col-3"></div>
     <div class="col self-center">
-      <q-form
-          @submit="onSubmit"
-          class="q-gutter-lg">
+      <q-card class="danger" flat bordered>
+        <q-card-section>
+          <q-form
+              @submit="onSubmit"
+              class="q-gutter-lg">
 
-          <h3>Nova conta</h3>
+              <h3>Nova conta</h3>
 
-          <q-input
-            filled
-            v-model="username"
-            label="Username"
-            hint="Digite seu nome de usuário"
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
+              <q-input
+                filled
+                v-model="username"
+                label="Username"
+                hint="Digite seu nome de usuário"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
 
-          <q-input
-            filled
-            v-model="email"
-            type="email"
-            label="Email"
-            hint="Digite seu email"
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
+              <q-input
+                filled
+                v-model="email"
+                type="email"
+                label="Email"
+                hint="Digite seu email"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
 
-          <q-input
-            filled
-            v-model="email2"
-            type="email"
-            label="Email"
-            hint="Digite novamente seu email"
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
+              <q-input
+                filled
+                v-model="email2"
+                type="email"
+                label="Email"
+                hint="Digite novamente seu email"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
 
-          <q-input
-            v-model="password"
-            filled
-            type="password"
-            label="Senha"
-            hint="Digite sua senha"
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
+              <q-input
+                v-model="password"
+                filled
+                type="password"
+                label="Senha"
+                hint="Digite sua senha"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
 
-          <q-input
-            v-model="password2"
-            filled
-            type="password"
-            label="Senha"
-            hint="Repita sua senha"
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
+              <q-input
+                v-model="password2"
+                filled
+                type="password"
+                label="Senha"
+                hint="Repita sua senha"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Campo obrigatório']" />
 
-          <div>
-            <q-btn label="Registrar" type="submit" color="primary" :loading="isLoading"></q-btn>
-            <q-btn label="Cancelar" @click="onCancel()" color="primary" flat class="q-ml-sm" />
-          </div>
-        </q-form>
+              <q-card v-show="errors.length > 0" class="text-negative" flat bordered>
+                <q-card-section>
+                  <ul>
+                    <li v-for="error in errors" :key="error.code">
+                      {{ error.description }}
+                    </li>
+                  </ul>
+                </q-card-section>
+              </q-card>
+
+              <div>
+                <q-btn label="Registrar" type="submit" color="primary" :loading="isLoading"></q-btn>
+                <q-btn label="Cancelar" @click="onCancel()" color="primary" flat class="q-ml-sm" />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
       </div>
       <div class="col-3"></div>
   </q-page>
@@ -70,13 +84,14 @@ export default {
 
   data() {
     return {
-      username: null,
-      password: null,
-      password2: null,
-      email: null,
-      email2: null,
+      username: '',
+      password: '',
+      password2: '',
+      email: '',
+      email2: '',
       api: new Api(),
       isLoading: false,
+      errors: [],
     };
   },
 
@@ -119,15 +134,19 @@ export default {
           });
           this.$router.push({ name: 'login' });
         }
-      }).catch((response) => {
-        console.log(response);
+      }).catch((error) => {
         this.isLoading = false;
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'fas fa-exclamation-triangle',
-          message: 'Algo de errado nao esta certo ',
-        });
+        if (error.response.data.errors) {
+          this.errors.splice(0);
+          this.errors = error.response.data.errors;
+        } else {
+          this.$q.notify({
+            color: 'red-5',
+            textColor: 'white',
+            icon: 'fas fa-exclamation-triangle',
+            message: error.response.data,
+          });
+        }
       });
     },
 
@@ -137,3 +156,8 @@ export default {
   },
 };
 </script>
+<style>
+  ul {
+    list-style-type: none;
+  }
+</style>

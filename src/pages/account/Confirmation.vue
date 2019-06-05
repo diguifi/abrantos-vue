@@ -2,7 +2,18 @@
   <q-page class="row text-center">
     <div class="col-3"></div>
     <div class="col self-center">
-      {{message}}
+      <q-card v-if="errors.length > 0" class="text-negative" flat bordered>
+        <q-card-section>
+          <ul>
+            <li v-for="error in errors" :key="error.code">
+              {{ error.description }}
+            </li>
+          </ul>
+        </q-card-section>
+      </q-card>
+      <div v-else>
+        {{message}}
+      </div>
     </div>
     <div class="col-3"></div>
   </q-page>
@@ -21,6 +32,7 @@ export default {
       userId: this.$route.query.userId,
       token: this.$route.query.token,
       isLoading: false,
+      errors: [],
     };
   },
 
@@ -40,9 +52,12 @@ export default {
           });
           this.$router.push({ name: 'login' });
         }
-      }).catch((response) => {
-        console.log(response);
-        this.message = 'Deu ruim pra confirmar o email, vixe.';
+      }).catch((error) => {
+        this.message = error.response.data;
+        if (this.message.errors) {
+          this.errors.splice(0);
+          this.errors = this.message.errors;
+        }
         this.isLoading = false;
         this.$q.notify({
           color: 'red-5',
@@ -59,3 +74,8 @@ export default {
   },
 };
 </script>
+<style>
+  ul {
+    list-style-type: none;
+  }
+</style>
