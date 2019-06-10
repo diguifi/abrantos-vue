@@ -2,7 +2,7 @@
   <q-page class="row text-center">
     <div class="col-3"></div>
     <div class="col self-center">
-      <q-card class="danger" flat bordered>
+      <q-card class="danger" bordered>
         <q-card-section>
           <q-form
               @submit="onSubmit"
