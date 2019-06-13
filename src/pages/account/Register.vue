@@ -1,14 +1,14 @@
 <template>
   <q-page class="row text-center">
-    <div class="col-3"></div>
-    <div class="col self-center">
+    <div class="col-1"></div>
+    <div class="col self-center q-mt-lg q-mb-lg">
       <q-card class="danger" flat bordered>
         <q-card-section>
           <q-form
               @submit="onSubmit"
               class="q-gutter-lg">
 
-              <h3>Nova conta</h3>
+              <div class="text-h3">Nova conta</div>
 
               <q-input
                 filled
@@ -72,7 +72,7 @@
           </q-card-section>
         </q-card>
       </div>
-      <div class="col-3"></div>
+      <div class="col-1"></div>
   </q-page>
 </template>
 

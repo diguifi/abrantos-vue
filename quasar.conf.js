@@ -44,7 +44,8 @@ module.exports = function (ctx) {
         'QToggle',
         'QCard',
         'QCardSection',
-        'QCardActions'
+        'QCardActions',
+        'QSlider'
       ],
 
       directives: [

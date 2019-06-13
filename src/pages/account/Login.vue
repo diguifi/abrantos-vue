@@ -1,6 +1,6 @@
 <template>
   <q-page class="row text-center">
-    <div class="col-3"></div>
+    <div class="col-2"></div>
     <div class="col self-center">
       <q-card class="danger" bordered>
         <q-card-section>
@@ -8,7 +8,7 @@
               @submit="onSubmit"
               class="q-gutter-lg">
 
-              <h3>Abrantos</h3>
+              <div class="text-h3">Abrantos</div>
 
               <q-input
                 filled
@@ -38,7 +38,7 @@
           </q-card-section>
         </q-card>
       </div>
-      <div class="col-3"></div>
+      <div class="col-2"></div>
   </q-page>
 </template>
 
