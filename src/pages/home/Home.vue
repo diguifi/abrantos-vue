@@ -6,8 +6,7 @@
           Aqui vai ficar o gráfico <br/>
           <ul style="padding: 0;">
             <li v-for="abranto in abrantos" :key="abranto.id">
-              {{ new Date(abranto.date).getDate() + '/' +
-               new Date(abranto.date).getMonth() }} - {{ abranto.abrantos }}
+              {{ abranto.date }} - {{ abranto.abrantos }}
             </li>
           </ul>
         </q-card-section>
@@ -34,6 +33,10 @@ export default {
         this.isLoading = false;
         if (success) {
           this.abrantos = success.data.dailyRegisterList;
+          this.abrantos.forEach((abranto) => {
+            const jsDate = new Date(abranto.date);
+            abranto.date = `${jsDate.getDate()}/${new Date(jsDate.setMonth(jsDate.getMonth() + 1)).getMonth()}`;
+          });
         }
       }).catch((error) => {
         this.isLoading = false;

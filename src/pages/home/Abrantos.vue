@@ -29,7 +29,7 @@
               </div>
             </div>
 
-            <q-btn label="Adicionar" type="submit"
+            <q-btn :label="buttonDescription" type="submit"
               color="secondary" :loading="isLoading"/>
           </q-form>
         </q-card-section>
@@ -50,44 +50,106 @@ export default {
     return {
       isLoading: false,
       abrantosQuantity: 0,
+      abrantosId: 0,
       sliderColor: 'red',
       api: new Api(),
+      buttonDescription: 'Adicionar',
+      updating: false,
     };
   },
 
   methods: {
+    getAbrantos() {
+      this.isLoading = true;
+      this.api.getAll(`dailyregister/date/${new Date().toJSON().toString()}`)
+        .then((result) => {
+          this.isLoading = false;
+          if (result) {
+            this.abrantosQuantity = result.data.dailyRegister.abrantos;
+            this.abrantosId = result.data.dailyRegister.id;
+            this.buttonDescription = 'Atualizar';
+            this.updating = true;
+          }
+        }).catch((error) => {
+          this.isLoading = false;
+          if (error.response.data.errors) {
+            this.errors.splice(0);
+            this.errors = error.response.data.errors;
+          } else {
+            this.$q.notify({
+              color: 'red-5',
+              textColor: 'white',
+              icon: 'fas fa-exclamation-triangle',
+              message: error.response.data,
+            });
+          }
+        });
+    },
     onSubmit() {
       this.isLoading = true;
-      this.api.post('dailyregister',
-        {
-          abrantos: this.abrantosQuantity,
-          date: new Date().toJSON(),
-          post: '',
-        }).then((success) => {
-        this.isLoading = false;
-        if (success) {
-          this.$q.notify({
-            color: 'green-4',
-            textColor: 'white',
-            icon: 'fas fa-check-circle',
-            message: 'Abrantos cadastrados pra hoje! ',
-          });
-          this.$router.push({ name: 'home' });
-        }
-      }).catch((error) => {
-        this.isLoading = false;
-        if (error.response.data.errors) {
-          this.errors.splice(0);
-          this.errors = error.response.data.errors;
-        } else {
-          this.$q.notify({
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'fas fa-exclamation-triangle',
-            message: error.response.data,
-          });
-        }
-      });
+      if (this.updating) {
+        this.api.put('dailyregister',
+          {
+            abrantos: this.abrantosQuantity,
+            date: new Date().toJSON(),
+            post: '',
+          }, this.abrantosId).then((success) => {
+          this.isLoading = false;
+          if (success) {
+            this.$q.notify({
+              color: 'green-4',
+              textColor: 'white',
+              icon: 'fas fa-check-circle',
+              message: 'Abrantos de hoje foram atualizados! ',
+            });
+            this.$router.push({ name: 'home' });
+          }
+        }).catch((error) => {
+          this.isLoading = false;
+          if (error.response.data.errors) {
+            this.errors.splice(0);
+            this.errors = error.response.data.errors;
+          } else {
+            this.$q.notify({
+              color: 'red-5',
+              textColor: 'white',
+              icon: 'fas fa-exclamation-triangle',
+              message: error.response.data,
+            });
+          }
+        });
+      } else {
+        this.api.post('dailyregister',
+          {
+            abrantos: this.abrantosQuantity,
+            date: new Date().toJSON(),
+            post: '',
+          }).then((success) => {
+          this.isLoading = false;
+          if (success) {
+            this.$q.notify({
+              color: 'green-4',
+              textColor: 'white',
+              icon: 'fas fa-check-circle',
+              message: 'Abrantos cadastrados pra hoje! ',
+            });
+            this.$router.push({ name: 'home' });
+          }
+        }).catch((error) => {
+          this.isLoading = false;
+          if (error.response.data.errors) {
+            this.errors.splice(0);
+            this.errors = error.response.data.errors;
+          } else {
+            this.$q.notify({
+              color: 'red-5',
+              textColor: 'white',
+              icon: 'fas fa-exclamation-triangle',
+              message: error.response.data,
+            });
+          }
+        });
+      }
     },
     sliderChange() {
       if (this.abrantosQuantity >= 0) {
@@ -96,6 +158,10 @@ export default {
         this.sliderColor = 'green';
       }
     },
+  },
+
+  created() {
+    this.getAbrantos();
   },
 };
 </script>
