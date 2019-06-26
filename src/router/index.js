@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import axios from 'axios';
 
 import routes from './routes';
 
@@ -32,6 +33,12 @@ export default function ({ store }) {
           query: { redirect: to.fullPath },
         });
       } else {
+        const axiosAuthHeader = 'Authorization';
+        if (!axios.defaults.headers.common[axiosAuthHeader]) {
+          const token = store.getters['auth/getToken'];
+          axios.defaults.headers.common[axiosAuthHeader] = `Bearer ${token}`;
+        }
+
         next();
       }
     } else {

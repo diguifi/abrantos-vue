@@ -72,16 +72,18 @@ export default {
           }
         }).catch((error) => {
           this.isLoading = false;
-          if (error.response.data.errors) {
-            this.errors.splice(0);
-            this.errors = error.response.data.errors;
-          } else {
-            this.$q.notify({
-              color: 'red-5',
-              textColor: 'white',
-              icon: 'fas fa-exclamation-triangle',
-              message: error.response.data,
-            });
+          if (error.response.status !== 404) {
+            if (error.response.data.errors) {
+              this.errors.splice(0);
+              this.errors = error.response.data.errors;
+            } else {
+              this.$q.notify({
+                color: 'red-5',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-triangle',
+                message: error.response.data,
+              });
+            }
           }
         });
     },
