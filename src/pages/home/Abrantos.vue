@@ -61,7 +61,9 @@ export default {
   methods: {
     getAbrantos() {
       this.isLoading = true;
-      this.api.getAll(`dailyregister/date/${new Date().toJSON().toString()}`)
+      const dateTime = new Date();
+      dateTime.setHours(dateTime.getHours() - 3);
+      this.api.getAll(`dailyregister/date/${dateTime.toJSON().toString()}`)
         .then((result) => {
           this.isLoading = false;
           if (result) {
@@ -89,11 +91,13 @@ export default {
     },
     onSubmit() {
       this.isLoading = true;
+      const dateTime = new Date();
+      dateTime.setHours(dateTime.getHours() - 3);
       if (this.updating) {
         this.api.put('dailyregister',
           {
             abrantos: this.abrantosQuantity,
-            date: new Date().toJSON(),
+            date: dateTime.toJSON(),
             post: '',
           }, this.abrantosId).then((success) => {
           this.isLoading = false;
@@ -124,7 +128,7 @@ export default {
         this.api.post('dailyregister',
           {
             abrantos: this.abrantosQuantity,
-            date: new Date().toJSON(),
+            date: dateTime.toJSON(),
             post: '',
           }).then((success) => {
           this.isLoading = false;
