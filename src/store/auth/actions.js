@@ -13,3 +13,12 @@ export async function AUTH_REQUEST(context, loginParams) {
   this.commit('auth/setAuthenticated', token);
   return true;
 }
+
+export async function AUTH_LOGOUT() {
+  const axiosAuthHeader = 'Authorization';
+  delete axios.defaults.headers.common[axiosAuthHeader];
+  localStorage.removeItem('abrantostoken');
+  this.commit('auth/removeAuthenticated');
+  this.$router.push('/login');
+  return true;
+}
