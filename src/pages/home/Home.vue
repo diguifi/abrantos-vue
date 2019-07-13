@@ -3,7 +3,23 @@
     <div class="col self-center q-ma-xl">
       <q-card class="danger" bordered>
         <q-card-section>
-          Aqui vai ficar o gráfico <br/>
+
+          <graph-line
+            :width="600"
+            :height="400"
+            :shape="'normal'"
+            :axis-min="0"
+            :axis-max="50"
+            :axis-full-mode="true"
+            :labels="dates"
+            :names="names"
+            :values="values">
+              <note :text="'Abrantos / Tempo'"></note>
+              <tooltip :names="names" :position="'right'"></tooltip>
+              <legends :names="names"></legends>
+              <guideline :tooltip-y="true"></guideline>
+          </graph-line>
+
           <ul style="padding: 0;">
             <li v-for="abranto in abrantos" :key="abranto.id">
               {{ abranto.date }} - {{ abranto.abrantos }}
@@ -25,6 +41,11 @@ export default {
       isLoading: false,
       abrantos: null,
       api: new Api(),
+      names: ['Você'],
+      values: [
+        [],
+      ],
+      dates: [],
     };
   },
   created() {
@@ -36,6 +57,8 @@ export default {
           this.abrantos.forEach((abranto) => {
             const jsDate = new Date(abranto.date);
             abranto.date = `${jsDate.getDate()}/${new Date(jsDate.setMonth(jsDate.getMonth() + 1)).getMonth()}`;
+            this.dates.push(abranto.date);
+            this.values[0].push(abranto.abrantos);
           });
         }
       }).catch((error) => {
