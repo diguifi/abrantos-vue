@@ -60,6 +60,8 @@ export default {
             this.dates.push(abranto.date);
             this.values[0].push(abranto.abrantos);
           });
+          this.dates.reverse();
+          this.values[0].reverse();
         }
       }).catch((error) => {
         this.isLoading = false;
